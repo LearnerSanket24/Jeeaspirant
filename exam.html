@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JEE Mains Exam Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+        }
+
+        #exam-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        #progress-bar-container {
+            width: 100%;
+            background: #ddd;
+            height: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background: #4caf50;
+            width: 0;
+        }
+
+        #question-number {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .question {
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+        }
+
+        .review {
+            border: 2px solid #ff9800;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        button {
+            font-size: 18px;
+            padding: 15px 30px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            color: white;
+        }
+
+        #prev-btn, #next-btn {
+            background-color: #4CAF50;
+        }
+
+        #review-btn {
+            background-color: #ff9800;
+        }
+
+        #submit-btn {
+            background-color: #f44336;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const questions = document.querySelectorAll('.question');
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const reviewBtn = document.getElementById('review-btn');
+            const questionNumber = document.getElementById('question-number');
+            const progressBar = document.getElementById('progress-bar');
+            let currentQuestionIndex = 0;
+
+            // Show the first question initially
+            function showQuestion(index) {
+                questions.forEach((question, i) => {
+                    question.style.display = i === index ? 'block' : 'none';
+                });
+                questionNumber.textContent = `Question ${index + 1} of ${questions.length}`;
+                progressBar.style.width = `${((index + 1) / questions.length) * 100}%`;
+            }
+            showQuestion(currentQuestionIndex);
+
+            // Handle navigation
+            nextBtn.addEventListener('click', () => {
+                if (currentQuestionIndex < questions.length - 1) {
+                    currentQuestionIndex++;
+                    showQuestion(currentQuestionIndex);
+                }
+            });
+            prevBtn.addEventListener('click', () => {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    showQuestion(currentQuestionIndex);
+                }
+            });
+
+            // Mark for review
+            reviewBtn.addEventListener('click', () => {
+                questions[currentQuestionIndex].classList.add('review');
+            });
+
+            // Submit and calculate results
+            submitBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                let correct = 0;
+                let incorrect = 0;
+                let unanswered = 0;
+
+                questions.forEach((question) => {
+                    const selected = question.querySelector('input[type="radio"]:checked');
+                    if (selected) {
+                        if (selected.value === question.dataset.correct) {
+                            correct++;
+                        } else {
+                            incorrect++;
+                        }
+                    } else {
+                        unanswered++;
+                    }
+                });
+
+                // Display results
+                alert(`Results:\nCorrect: ${correct}\nIncorrect: ${incorrect}\nUnanswered: ${unanswered}`);
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>JEE Mains Exam Portal</h1>
+    
+    <section id="exam-container">
+        <div id="progress-bar-container">
+            <div id="progress-bar"></div>
+        </div>
+        <p id="question-number"></p>
+        
+        <form id="exam-form">
+            <!-- Physics Questions -->
+            <h2>Physics Section</h2>
+            <div class="question" data-correct="1">
+                <p><strong>Q1:</strong> What is the SI unit of electric current?</p>
+                <label><input type="radio" name="q1" value="1"> Ampere</label>
+                <label><input type="radio" name="q1" value="2"> Volt</label>
+                <label><input type="radio" name="q1" value="3"> Coulomb</label>
+                <label><input type="radio" name="q1" value="4"> Ohm</label>
+            </div>
+            <div class="question" data-correct="2">
+                <p><strong>Q2:</strong> Which law explains the relationship between force, mass, and acceleration?</p>
+                <label><input type="radio" name="q2" value="1"> Newton's First Law</label>
+                <label><input type="radio" name="q2" value="2"> Newton's Second Law</label>
+                <label><input type="radio" name="q2" value="3"> Newton's Third Law</label>
+                <label><input type="radio" name="q2" value="4"> Law of Conservation of Energy</label>
+            </div>
+            <!-- More Physics questions can be added here -->
+
+            <!-- Chemistry Questions -->
+            <h2>Chemistry Section</h2>
+            <div class="question" data-correct="2">
+                <p><strong>Q31:</strong> Which gas is known as "Laughing Gas"?</p>
+                <label><input type="radio" name="q31" value="1"> Oxygen</label>
+                <label><input type="radio" name="q31" value="2"> Nitrous Oxide</label>
+                <label><input type="radio" name="q31" value="3"> Carbon Dioxide</label>
+                <label><input type="radio" name="q31" value="4"> Methane</label>
+            </div>
+            <!-- More Chemistry questions can be added here -->
+
+            <!-- Mathematics Questions -->
+            <h2>Mathematics Section</h2>
+            <div class="question" data-correct="1">
+                <p><strong>Q61:</strong> If \( y = x^2 \), the derivative \( \frac{dy}{dx} \) is:</p>
+                <label><input type="radio" name="q61" value="1"> \( 2x \)</label>
+                <label><input type="radio" name="q61" value="2"> \( x^2 \)</label>
+                <label><input type="radio" name="q61" value="3"> \( 2 \)</label>
+                <label><input type="radio" name="q61" value="4"> \( x \)</label>
+            </div>
+            <!-- More Mathematics questions can be added here -->
+
+            <!-- Navigation Buttons -->
+            <div class="buttons">
+                <button type="button" id="prev-btn">Previous</button>
+                <button type="button" id="review-btn">Mark for Review</button>
+                <button type="button" id="next-btn">Next</button>
+                <button type="submit" id="submit-btn">Submit</button>
+            </div>
+        </form>
+    </section>
+</body>
+</html>
